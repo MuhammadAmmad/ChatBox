@@ -1,5 +1,6 @@
 package com.corp.kes.chatbox;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,17 +12,19 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Declaring Your View and Variables
+    // Declaring View and Variables
+    Context context;
     Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
     TabLayout tabs;
-    CharSequence Titles[] = {"Rooms", "Chat", "Account"};
+    final CharSequence Titles[] = {"Rooms", "Chat", "Account"};
     final int NumTabs = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_main);
 
         // Creating the Toolbar and setting it as the Toolbar for the activity
@@ -35,21 +38,13 @@ public class MainActivity extends AppCompatActivity {
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
-        // Assiging the Sliding Tab Layout View
+        // Assigning the Sliding Tab Layout View
         tabs = (TabLayout) findViewById(R.id.tabs);
 
+        // Setting the ViewPager For the TabsLayout
+        tabs.setupWithViewPager(pager);
 
-
-        //tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        /*tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });*/
-
+        // Attach the page change listener to tab strip and view pager
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -66,17 +61,51 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                _toast("Tab " + String.valueOf(position) + " was un-selected");
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                _toast("Tab " + String.valueOf(position) + " was re-selected");
             }
         });
 
+        // Attach the page change listener to tab strip and view pager
+        /*tabs.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
 
-        // Setting the ViewPager For the TabsLayout
-        tabs.setupWithViewPager(pager);
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        _toast("Tab 0");
+                        break;
+                    case 1:
+                        _toast("Tab 1");
+                        break;
+                    case 2:
+                        _toast("Tab 2");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                _toast("Tab " + String.valueOf(position) + " was select");
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                _toast("Tab " + String.valueOf(position) + " was select");
+            }
+        });*/
     }
 
     public void _toast(String message) {

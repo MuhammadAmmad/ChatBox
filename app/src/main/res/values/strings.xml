@@ -4,4 +4,7 @@
     <string name="firebase_url">https://android-chatbox.firebaseio.com</string>
     <string name="btn_send">Send</string>
     <string name="msg_hint">Type your message...</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
